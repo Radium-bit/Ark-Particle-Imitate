@@ -30,6 +30,8 @@ interface ParticleOptions {
      */
     invert?: boolean
   }
+  /** 是否启用彩色模式，不填则默认为灰度模式 */
+  useColor?: boolean
   /** 鼠标影响的粒子半径，**设置 `effectParticleMode` 后生效**, 默认 50 */
   Thickness?: number
   /** 拖拽力度，**设置 `effectParticleMode` 后生效**, 默认 0.95 */
@@ -50,6 +52,7 @@ declare class Point {
    * @param {number} ory 目标位置 y 
    * @param {number} size 圆点大小
    * @param {number} colorNum rgb 加起来的总和
+   * @param {string} realColor 使用彩色模式时传入的rgb值
    * @param {HTMLCanvasElement} canvas canvas 元素
    * @param {boolean} cancelRandPlace 取消点初始化的随机点位
    */
@@ -58,6 +61,7 @@ declare class Point {
     ory: number,
     size: number,
     colorNum: number,
+    realColor: string,
     canvas: HTMLCanvasElement,
     cancelRandPlace?: boolean
   ): void
