@@ -406,6 +406,18 @@ class DameDaneParticle {
     */
   ChangeImg(src, options) {
     this.IMG.src = src;
+    // 如果 options 中没有 useColor，则设置默认值为 false，并取消高精度渲染模式
+    if (typeof options.useColor === 'undefined') {
+      options.useColor = false;
+      options.validColor= { //恢复默认色彩范围
+        min: 300,
+        max: 765,
+        invert: false
+      }
+      if(typeof options.UseHiPrecision === 'undefined'){
+        options.UseHiPrecision = false;
+      }
+    }
     // 替换设置
     if (options) {
       for (const i in options) {
