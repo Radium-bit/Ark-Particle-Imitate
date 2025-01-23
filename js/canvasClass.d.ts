@@ -32,6 +32,8 @@ interface ParticleOptions {
   }
   /** 是否启用彩色模式，不填则默认为灰度模式 */
   useColor?: boolean
+  /** 是否采用高精度的色彩/灰度渲染模式？ */
+  UseHiPrecision?: boolean
   /** 鼠标影响的粒子半径，**设置 `effectParticleMode` 后生效**, 默认 50 */
   Thickness?: number
   /** 拖拽力度，**设置 `effectParticleMode` 后生效**, 默认 0.95 */

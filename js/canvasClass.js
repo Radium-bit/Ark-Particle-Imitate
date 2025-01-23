@@ -23,7 +23,7 @@ class Point {
     this.canvas = canvas;
 
     // 颜色
-    if(realColor.length != 0){
+    if(realColor.length !== 0){
       // 如果存在色彩数据，直接调用
       this.color = realColor;
     }else{
@@ -182,6 +182,7 @@ class DameDaneParticle {
         min: 300, max: 765, invert: false
       },
       useColor: false, // 是否启用彩色模式，默认为否
+      UseHiPrecision: false, //是否使用更高精度的色彩渲染模式，默认为否（会执行二次渲染）
       cancelParticleAnimation: false
     }
     // 处理可能存在的Undefined值
@@ -261,7 +262,12 @@ class DameDaneParticle {
       this._InitParticle(this._imgArr, true);
       if (!this.hasDraw) this._Draw2Canvas();
       this.hasInit = true;
-
+      if(this.options.UseHiPrecision===true){ 
+        //使用高精度色彩时，触发resize以二次渲染
+        setTimeout(()=>{
+          window.dispatchEvent(new Event('resize'));
+        },550)
+      }
       callback && callback();
     }
 
@@ -294,7 +300,7 @@ class DameDaneParticle {
    * @param {boolean} rebuildParticle 是否重组图像
    */
   _InitParticle = (ImgData, rebuildParticle = false) => {
-    if (!ImgData) ImgData = this._imgArr;
+    if (!ImgData) ImgData = this._imgArr; // 确保 ImgData 不为空
 
     let imgW = this.ImgW, imgH = this.ImgH, cnt = 0;
 
@@ -323,7 +329,7 @@ class DameDaneParticle {
             if(this.options.useColor === true){
               point.changePos(w * spacing + this.renderX, h * spacing + this.renderY, val,`${r},${g},${b}`)
             }else{
-              point.changePos(w * spacing + this.renderX, h * spacing + this.renderY, val)
+              point.changePos(w * spacing + this.renderX, h * spacing + this.renderY, val,``)
             }
             
           }
@@ -331,7 +337,7 @@ class DameDaneParticle {
             if(this.options.useColor === true){
               arr[cnt] = new Point(w * spacing + this.renderX, h * spacing + this.renderY, size, val,`${r},${g},${b}`, this.canvasEle, this.hasInit || cancelParticleAnimation);
             }else{
-              arr[cnt] = new Point(w * spacing + this.renderX, h * spacing + this.renderY, size, val, this.canvasEle, this.hasInit || cancelParticleAnimation);
+              arr[cnt] = new Point(w * spacing + this.renderX, h * spacing + this.renderY, size, val,``, this.canvasEle, this.hasInit || cancelParticleAnimation);
             }
           } 
           cnt++;
@@ -391,6 +397,8 @@ class DameDaneParticle {
       });
   }
 
+
+
   /**
     * 修改展示的图片，未设置的项会继承上一张图片的设置
     * @param {string} src 图片路径
@@ -403,6 +411,12 @@ class DameDaneParticle {
       for (const i in options) {
         this.options[i] = options[i];
       }
+    }
+    if(this.options.UseHiPrecision===true){ 
+      //使用高精度色彩时，触发resize以二次渲染
+      setTimeout(()=>{
+        window.dispatchEvent(new Event('resize'));
+      },550)
     }
   }
 
